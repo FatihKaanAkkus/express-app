@@ -1,0 +1,43 @@
+{
+  "name": "express-app",
+  "version": "0.1.0",
+  "description": "A simple Express application with TypeScript, Prisma, and Zod",
+  "keywords": [],
+  "author": "Fatih Kaan Akkus",
+  "license": "UNLICENSED",
+  "main": "dist/app.js",
+  "scripts": {
+    "start": "node dist/app.js",
+    "build": "tsc && tsc-alias",
+    "dev": "ts-node-dev -r tsconfig-paths/register src/app.ts",
+    "debug": "ts-node-dev --inspect -r tsconfig-paths/register src/app.ts",
+    "preview": "ts-node -r tsconfig-paths/register src/app.ts",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:format": "prisma format",
+    "prisma:dbpush": "prisma db push",
+    "prisma:dbseed": "prisma db seed",
+    "prisma:generate": "prisma generate"
+  },
+  "prisma": {
+    "seed": "ts-node -r tsconfig-paths/register src/database/seeders/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.6.0",
+    "cache-manager": "^6.4.2",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "prisma": "^6.6.0",
+    "zod": "^3.24.2",
+    "zod-validation-error": "^3.4.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^9.7.0",
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.14.0",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "tsc-alias": "^1.8.15",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.8.3"
+  }
+}

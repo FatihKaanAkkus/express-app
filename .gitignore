@@ -1,0 +1,13 @@
+node_modules/
+dist/
+
+prisma/database/
+prisma/generated/
+src/generated/
+
+.env
+.env.local
+.env.*.local
+
+*.log
+.vscode/
