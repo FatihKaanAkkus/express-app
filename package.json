@@ -25,14 +25,17 @@
   "dependencies": {
     "@prisma/client": "^6.6.0",
     "cache-manager": "^6.4.2",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
+    "helmet": "^8.1.0",
     "prisma": "^6.6.0",
     "zod": "^3.24.2",
     "zod-validation-error": "^3.4.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^9.7.0",
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
     "@types/node": "^22.14.0",
     "@types/supertest": "^6.0.3",
