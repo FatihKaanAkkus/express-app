@@ -20,6 +20,10 @@ app.listen(env.PORT, (error) => {
   if (error) {
     console.error('Error starting server:', error);
   } else {
-    console.log(`Server is running at http://localhost:${env.PORT}`);
+    if (env.NODE_ENV !== 'test') {
+      console.log(`Server is running at http://localhost:${env.PORT}`);
+    }
   }
 });
+
+export default app;
