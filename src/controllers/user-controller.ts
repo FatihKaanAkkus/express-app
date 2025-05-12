@@ -7,7 +7,7 @@ import { keys } from '@/helpers/cache-keys';
 /**
  * Indexes all users in the database.
  */
-export async function indexUsers(req: Request, res: Response) {
+export const indexUsers = async (req: Request, res: Response) => {
   const users = await prisma.user.findMany({
     select: {
       id: true,
@@ -18,13 +18,13 @@ export async function indexUsers(req: Request, res: Response) {
   await cache.set(res.locals.cacheKey as string, users);
 
   res.status(200).json(users);
-}
+};
 
 /**
  * Creates a new user in the database.
  * Invalidates the user index cache after successfull operation.
  */
-export async function createUser(req: Request, res: Response) {
+export const createUser = async (req: Request, res: Response) => {
   const { email, name } = req.body as CreateUserSchema;
 
   const user = await prisma.user.create({
@@ -37,12 +37,12 @@ export async function createUser(req: Request, res: Response) {
   await cache.del(keys.user.index()); // <-- Invalidate the cache
 
   res.status(201).send(user);
-}
+};
 
 /**
  * Shows a specific user by ID.
  */
-export async function showUser(req: Request<{ id: string }>, res: Response) {
+export const showUser = async (req: Request<{ id: string }>, res: Response) => {
   const { id } = req.params;
 
   const user = await prisma.user.findUnique({
@@ -62,4 +62,4 @@ export async function showUser(req: Request<{ id: string }>, res: Response) {
   await cache.set(res.locals.cacheKey, user);
 
   res.status(200).json(user);
-}
+};
