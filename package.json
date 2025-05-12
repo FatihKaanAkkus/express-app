@@ -23,28 +23,28 @@
     "seed": "ts-node -r tsconfig-paths/register src/database/seeders/seed.ts"
   },
   "dependencies": {
-    "@prisma/client": "^6.6.0",
-    "cache-manager": "^6.4.2",
+    "@prisma/client": "^6.7.0",
+    "cache-manager": "^6.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
     "helmet": "^8.1.0",
-    "prisma": "^6.6.0",
-    "zod": "^3.24.2",
-    "zod-validation-error": "^3.4.0"
+    "prisma": "^6.7.0",
+    "zod": "^3.24.4",
+    "zod-validation-error": "^3.4.1"
   },
   "devDependencies": {
     "@faker-js/faker": "^9.7.0",
-    "@types/cors": "^2.8.17",
+    "@types/cors": "^2.8.18",
     "@types/express": "^5.0.1",
-    "@types/node": "^22.14.0",
+    "@types/node": "^22.15.17",
     "@types/supertest": "^6.0.3",
     "supertest": "^7.1.0",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
-    "tsc-alias": "^1.8.15",
+    "tsc-alias": "^1.8.16",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.3",
-    "vitest": "^3.1.2"
+    "vitest": "^3.1.3"
   }
 }
