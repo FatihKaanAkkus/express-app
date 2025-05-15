@@ -66,7 +66,7 @@ npm install
 npx prisma migrate dev --name init --skip-seed
 ```
 
-6. Additionally, you can seed the database with initial data from Postman collection:
+6. Additionally, you can seed the database with random data using seed files:
 
 ```bash
 npx prisma db seed
@@ -109,6 +109,6 @@ npm start
 ## Improve Later
 
 - Add cross-env to the project, or similar, to set the environment for local testing.
-- Add Prisma migration compare/genereate command to package.json since it is lots to remember.
+- Add Prisma migration compare/generate command to package.json since it is lots to remember.
 - Production build should include `dist/`, `prisma/`, `.env.example`, `package.json` and
   `package-lock.json` files only.

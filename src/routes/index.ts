@@ -3,7 +3,16 @@ import v1 from './v1';
 
 const root = () => {
   return (req: Request, res: Response) => {
-    res.json({ message: 'Express App API', version: '0.1.0' });
+    res.json({
+      message: 'Express App API',
+      description: 'This is the root endpoint of the Express App API.',
+      versions: {
+        v1: '/v1',
+      },
+      documentation: '',
+      authentication: '',
+      rate_limit: '',
+    });
   };
 };
 
