@@ -1,0 +1,54 @@
+services:
+  postgres_db:
+    image: postgres
+    restart: always
+    user: postgres
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db_password
+    secrets:
+      - db_password
+    ports:
+      - "5432:5432"
+    networks:
+      - prisma_network
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    command: postgres -c listen_addresses='*'
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile.postgres
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3000:3000
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+    env_file:
+      - .env.production
+    networks:
+      - prisma_network
+
+networks:
+  prisma_network:
+    name: prisma_network
+
+volumes:
+  db_data:
+
+secrets:
+  db_password:
+    file: secrets/db_password.txt

@@ -24,13 +24,13 @@
     "seed": "ts-node -r tsconfig-paths/register src/database/seeders/seed.ts"
   },
   "dependencies": {
-    "@prisma/client": "^6.8.0",
+    "@prisma/client": "^6.8.2",
     "cache-manager": "^6.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "helmet": "^8.1.0",
-    "prisma": "^6.8.0",
+    "prisma": "^6.8.2",
     "uuid": "^11.1.0",
     "zod": "^3.24.4",
     "zod-validation-error": "^3.4.1"
@@ -38,7 +38,7 @@
   "devDependencies": {
     "@faker-js/faker": "^9.8.0",
     "@types/cors": "^2.8.18",
-    "@types/express": "^5.0.1",
+    "@types/express": "^5.0.2",
     "@types/node": "^22.15.18",
     "@types/supertest": "^6.0.3",
     "supertest": "^7.1.1",

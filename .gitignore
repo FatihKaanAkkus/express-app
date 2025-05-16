@@ -1,5 +1,6 @@
 node_modules/
 dist/
+secrets/
 
 prisma/database/
 prisma/generated/
@@ -8,6 +9,7 @@ src/generated/
 .env
 .env.local
 .env.*.local
+.env.production
 
 *.log
 .vscode/

@@ -20,6 +20,7 @@ used to give an idea of the implementation required.
 - Validation is done using `Zod`.
 - Caching is done using `cache-manager`.
   - Under the hood, it uses Keyv by default. Configurable to use Redis or other supported stores.
+- Testing is done using `Vitest` and `Supertest`.
 - Production build generated using `tsc` with target `ES2020`.
   - Compiler paths are resolved using `tsc-alias` within build script.
 

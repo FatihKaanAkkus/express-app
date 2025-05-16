@@ -5,6 +5,12 @@ When you're ready, start your application by running:
 
 Your application will be available at http://localhost:3000.
 
+To use regarding docker files for different options run:
+`docker compose -f .\compose.postgres.yaml up --build`.
+Make sure to make changes to .env files and generating correct migrations
+to change lockfile for database, etc. This decision is generally made
+within the initial design phase of the project.
+
 ### Deploying your application to the cloud
 
 First, build your image, e.g.: `docker build -t myapp .`.
@@ -19,4 +25,5 @@ Consult Docker's [getting started](https://docs.docker.com/go/get-started-sharin
 docs for more detail on building and pushing.
 
 ### References
-* [Docker's Node.js guide](https://docs.docker.com/language/nodejs/)
+
+- [Docker's Node.js guide](https://docs.docker.com/language/nodejs/)

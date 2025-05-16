@@ -35,3 +35,4 @@ README.md
 **/prisma/database
 **/prisma/generated
 **/src/generated
+**/secrets
