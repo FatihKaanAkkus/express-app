@@ -16,6 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/', routes.root());
+app.get('/metrics', routes.metrics);
 app.use('/v1', routes.v1);
 
 app.use(errorHandler());

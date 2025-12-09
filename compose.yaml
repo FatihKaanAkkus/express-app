@@ -6,6 +6,19 @@ services:
     environment:
       NODE_ENV: production
     ports:
-      - 3000:3000
+      - 3001:3001
     env_file:
       - .env.production
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+volumes:
+  prometheus-data:

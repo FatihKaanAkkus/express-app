@@ -3,11 +3,14 @@ import prisma from '@/database/prisma-client';
 import { CreateUserSchema } from '@/validators/user-schemas';
 import cache from '@/config/cache';
 import { keys } from '@/helpers/cache-keys';
+import { userOperationsCounter } from '@/config/metrics';
 
 /**
  * Indexes all users in the database.
  */
 export const indexUsers = async (req: Request, res: Response) => {
+  userOperationsCounter.inc({ operation: 'index' });
+
   const users = await prisma.user.findMany({
     select: {
       id: true,
@@ -22,9 +25,11 @@ export const indexUsers = async (req: Request, res: Response) => {
 
 /**
  * Creates a new user in the database.
- * Invalidates the user index cache after successfull operation.
+ * Invalidates the user index cache after successful operation.
  */
 export const createUser = async (req: Request, res: Response) => {
+  userOperationsCounter.inc({ operation: 'create' });
+
   const { email, name } = req.body as CreateUserSchema;
 
   const user = await prisma.user.create({
@@ -43,6 +48,8 @@ export const createUser = async (req: Request, res: Response) => {
  * Shows a specific user by ID.
  */
 export const showUser = async (req: Request<{ id: string }>, res: Response) => {
+  userOperationsCounter.inc({ operation: 'show' });
+
   const { id } = req.params;
 
   const user = await prisma.user.findUnique({

@@ -78,7 +78,7 @@ npx prisma db seed
 npm run dev
 ```
 
-8. Access the API at `http://localhost:3000` or configured PORT in .env file.
+8. Access the API at `http://localhost:3001` or configured PORT in .env file.
 
 9. Use `vitest` to test the API endpoints.
 
