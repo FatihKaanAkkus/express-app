@@ -41,6 +41,7 @@ COPY --from=build /app/dist ./dist
 COPY --from=build /app/.env ./.env
 
 # Prisma generated .so.node files are not copied via build command
+COPY --from=build /app/prisma.config.ts ./
 COPY --from=build /app/prisma ./prisma
 COPY --from=build /app/src/generated/prisma/*.so.node ./dist/generated/prisma/
 
