@@ -3,9 +3,11 @@ import { faker } from '@faker-js/faker';
 
 export default async function main() {
   const list = Array.from({ length: 5 }, (_, i) => ({
-    id: i + 1,
+    id: faker.string.uuid(),
     email: faker.internet.email({ provider: 'fkakkus.com' }),
     name: faker.person.fullName(),
+    createdAt: faker.date.past(),
+    updatedAt: faker.date.recent(),
   }));
 
   for (const user of list) {
