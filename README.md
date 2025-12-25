@@ -42,6 +42,7 @@ To get started, follow the instructions below to set up the project on your loca
 |-- .env.example               # Should populate .env file from this example
 |-- .gitignore
 |-- package.json
+|-- prometheus.yml             # Prometheus configuration file
 |-- tsconfig.json
 |-- vitest.config.ts
 ```

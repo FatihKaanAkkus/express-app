@@ -14,7 +14,7 @@ export default () => {
 
     res.status(statusCode).json({
       error: 'An error occurred',
-      message: env.NODE_ENV === 'development' ? message : 'Internal Server Error',
+      message: env.get<string>('NODE_ENV', 'development') === 'development' ? message : 'Internal Server Error',
     });
   };
 };

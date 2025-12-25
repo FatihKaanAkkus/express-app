@@ -21,12 +21,12 @@ app.use('/v1', routes.v1);
 
 app.use(errorHandler());
 
-app.listen(env.PORT, (error) => {
+app.listen(env.get<number>('PORT', 3001), (error) => {
   if (error) {
     console.error('Error starting server:', error);
   } else {
-    if (env.NODE_ENV !== 'test') {
-      console.log(`Server is running at http://localhost:${env.PORT}`);
+    if (env.get<string>('NODE_ENV', 'development') !== 'test') {
+      console.log(`Server is running at http://localhost:${env.get<number>('PORT', 3001)}`);
     }
   }
 });
