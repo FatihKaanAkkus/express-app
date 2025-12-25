@@ -46,6 +46,6 @@ COPY --from=build /app/src/generated/prisma/*.so.node ./dist/generated/prisma/
 
 ADD docker_start.sh ./start.sh
 
-EXPOSE 3000
+EXPOSE 3001
 
 CMD ["sh", "./start.sh"]

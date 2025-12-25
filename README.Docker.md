@@ -3,7 +3,7 @@
 When you're ready, start your application by running:
 `docker compose up --build`.
 
-Your application will be available at http://localhost:3000.
+Your application will be available at http://localhost:3001.
 
 To use regarding docker files for different options run:
 `docker compose -f .\compose.postgres.yaml up --build`.

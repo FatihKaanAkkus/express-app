@@ -7,7 +7,7 @@ interface Env {
 }
 
 const env: Env = {
-  PORT: Number(process.env.PORT) || 3000,
+  PORT: Number(process.env.PORT) || 3001,
   NODE_ENV: process.env.NODE_ENV || 'development',
   DATABASE_URL: process.env.DATABASE_URL || 'file:./database/db.sqlite',
 };
