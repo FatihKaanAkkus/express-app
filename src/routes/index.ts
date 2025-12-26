@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { register } from '@/config/metrics';
 import v1 from './v1';
+import metrics from './metrics';
 
 const root = () => {
   return (req: Request, res: Response) => {
@@ -17,13 +17,8 @@ const root = () => {
   };
 };
 
-const metrics = async (req: Request, res: Response) => {
-  res.setHeader('Content-Type', register.contentType);
-  res.send(await register.metrics());
-};
-
 export default {
   root,
-  v1,
   metrics,
+  v1,
 };

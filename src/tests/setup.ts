@@ -1,12 +1,11 @@
 import prisma from '@/database/prisma-client';
 import { afterAll, beforeAll } from 'vitest';
-import cleanUpUserRoutesTest from './routes/user-routes.test';
 
-beforeAll(() => {});
+beforeAll(async () => {
+  await prisma.$executeRaw`BEGIN`;
+});
 
 afterAll(async () => {
-  // Call the cleanup functions if needed
-  await cleanUpUserRoutesTest();
-
+  await prisma.$executeRaw`ROLLBACK`;
   await prisma.$disconnect();
 });

@@ -5,6 +5,7 @@ secrets/
 prisma/database/
 prisma/generated/
 src/generated/
+coverage/
 
 .env
 .env.local

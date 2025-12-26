@@ -8,14 +8,28 @@
     "forceConsistentCasingInFileNames": true,
     "noUnusedLocals": true,
     "allowJs": true,
+    "sourceMap": true,
     "outDir": "./dist",
     "rootDir": "./src",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     },
   },
-  "files": ["src/types.d.ts"],
-  "include": ["src/**/*.ts", "src/**/*.js", "src/tests"],
-  "exclude": ["node_modules", "**/*.spec.ts", "dist"]
+  "files": [
+    "src/types.d.ts"
+  ],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.js",
+    "src/tests"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "dist"
+  ]
 }

@@ -10,7 +10,8 @@ To get started, follow the instructions below to set up the project on your loca
 
 ```
 |-- src/
-│   |-- app.ts                 # Main application entry point
+│   |-- app.ts                 # Application entry point
+|   |-- server.ts              # Server entry point
 │   |-- config/
 │   │   |-- cache.ts           # Cache configuration using cache-manager
 │   │   |-- env.ts             # Environment configuration
@@ -55,49 +56,49 @@ To get started, follow the instructions below to set up the project on your loca
 
 3. Install the dependencies using npm:
 
-```bash
-npm install
-```
+   ```bash
+   npm install
+   ```
 
 4. Create a `.env` file in the root directory. Use `.env.example` as a template.
 
 5. Run the following command to migrate the database:
 
-```bash
-npx prisma migrate dev --name init --skip-seed
-```
+   ```bash
+   npx prisma migrate dev --name init --skip-seed
+   ```
 
 6. Additionally, you can seed the database with random data using seed files:
 
-```bash
-npx prisma db seed
-```
+   ```bash
+   npx prisma db seed
+   ```
 
 7. Start the dev server:
 
-```bash
-npm run dev
-```
+   ```bash
+   npm run dev
+   ```
 
 8. Access the API at `http://localhost:3001` or configured PORT in .env file.
 
 9. Use `vitest` to test the API endpoints.
 
-```bash
-npm run test
-```
+   ```bash
+   npm run test
+   ```
 
 10. For production build, run:
 
-```bash
-npm run build
-```
+    ```bash
+    npm run build
+    ```
 
 11. Start the production server:
 
-```bash
-npm start
-```
+    ```bash
+    npm start
+    ```
 
 ## Additional Information
 
@@ -113,3 +114,29 @@ npm start
 - Add Prisma migration compare/generate command to package.json since it is lots to remember.
 - Production build should include `dist/`, `prisma/`, `.env.example`, `package.json` and
   `package-lock.json` files only.
+
+## Docker Setup
+
+- Make sure to create a Docker network named `monitoring-net` before running the compose file:
+
+  ```bash
+  docker network create monitoring-net
+  ```
+
+- Use `compose.yaml` to set up the application with Prometheus monitoring.
+
+  ```bash
+  docker-compose -f compose.yaml up -d
+  ```
+
+- Use `compose.grafana.yaml` to set up Grafana for visualization.
+
+  ```bash
+  docker-compose -f compose.grafana.yaml up -d
+  ```
+
+- Or use both together:
+
+  ```bash
+  docker-compose -f compose.yaml -f compose.grafana.yaml up -d
+  ```

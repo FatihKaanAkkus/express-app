@@ -1,5 +1,4 @@
 import app from '@/app';
-import prisma from '@/database/prisma-client';
 import request from 'supertest';
 import { describe, expect, it } from 'vitest';
 
@@ -31,6 +30,16 @@ describe('POST /v1/users', () => {
     expect(response.status).toBe(400);
     expect(response.body).toHaveProperty('message');
   });
+
+  it('should return an error when creating a duplicate user', async () => {
+    const duplicateUser = { name: 'Dup User', email: 'dup.user@example.com' };
+    const createResponse = await request(app).post('/v1/users').send(duplicateUser);
+    expect(createResponse.status).toBe(201);
+
+    const response = await request(app).post('/v1/users').send(duplicateUser);
+    expect(response.status).toBeGreaterThanOrEqual(400);
+    expect(response.body).toHaveProperty('message');
+  });
 });
 
 describe('GET /v1/users/:id', () => {
@@ -47,16 +56,11 @@ describe('GET /v1/users/:id', () => {
     expect(response.body).toHaveProperty('name', newUser.name);
     expect(response.body).toHaveProperty('email', newUser.email);
   });
-});
 
-export default async function cleanUp() {
-  try {
-    await prisma.user.deleteMany({
-      where: {
-        email: {
-          in: ['john.doe@example.com', 'mark.juke@example.com'],
-        },
-      },
-    });
-  } catch (error) {}
-}
+  it('should return a 404 status and error message if the user does not exist', async () => {
+    const nonExistentId = 'non-existent-id';
+    const response = await request(app).get(`/v1/users/${nonExistentId}`);
+    expect(response.status).toBe(404);
+    expect(response.body).toHaveProperty('message', 'User not found');
+  });
+});

@@ -7,13 +7,19 @@ services:
       NODE_ENV: production
     ports:
       - 3001:3001
+    networks:
+      - monitoring-net
     env_file:
       - .env.production
+    volumes:
+      - storage_data:/storage
 
   prometheus:
     image: prom/prometheus:latest
     ports:
       - 9090:9090
+    networks:
+      - monitoring-net
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-data:/prometheus
@@ -21,4 +27,9 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
 volumes:
+  storage_data:
   prometheus-data:
+
+networks:
+  monitoring-net:
+    external: true

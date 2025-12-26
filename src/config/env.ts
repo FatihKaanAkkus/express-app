@@ -12,12 +12,6 @@ const defaultEnv: EnvProps = {
   DATABASE_URL: process.env.DATABASE_URL || 'file:./database/db.sqlite',
 };
 
-if (!process.env.PORT) {
-  console.warn(`PORT is not defined in .env file, using default "${defaultEnv.PORT}"`);
-}
-if (!process.env.NODE_ENV) {
-  console.warn(`NODE_ENV is not defined in .env file, using default "${defaultEnv.NODE_ENV}"`);
-}
 if (!process.env.DATABASE_URL) {
   throw new Error('DATABASE_URL is required in .env file');
 }

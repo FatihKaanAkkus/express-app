@@ -1,21 +1,32 @@
-import path from 'path';
-import { defineConfig } from 'vitest/config';
+import path from "path";
+import { configDefaults, defineConfig } from "vitest/config";
+
+console.log(configDefaults.exclude);
 
 export default defineConfig({
   test: {
-    environment: 'node',
+    environment: "node",
     typecheck: {
       enabled: true,
     },
-    setupFiles: './src/tests/setup.ts',
-    include: ['src/tests/**/*.test.ts'],
-    exclude: ['node_modules', 'dist', 'prisma'],
+    setupFiles: "./src/tests/setup.ts",
+    include: ["src/**/*.test.ts"],
+    exclude: [
+      ...configDefaults.exclude,
+      "dist",
+      "prisma",
+      "src/generated",
+      "src/database",
+    ],
     watch: false,
+    coverage: {
+      exclude: ["src/generated", "src/database"],
+    },
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-      '@prisma': path.resolve(__dirname, './prisma'),
+      "@": path.resolve(__dirname, "./src"),
+      "@prisma": path.resolve(__dirname, "./prisma"),
     },
   },
 });

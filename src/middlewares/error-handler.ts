@@ -10,11 +10,13 @@ export default () => {
     const statusCode = err.status || 500;
     const message = err.message || 'An unexpected error occurred.';
 
-    console.error(`[Error] ${message}`);
+    if (env.get<string>('NODE_ENV', 'production') !== 'test') {
+      console.error(`[Error] ${message}`);
+    }
 
     res.status(statusCode).json({
       error: 'An error occurred',
-      message: env.get<string>('NODE_ENV', 'development') === 'development' ? message : 'Internal Server Error',
+      message: env.get<string>('NODE_ENV', 'production') === 'development' ? message : 'Internal Server Error',
     });
   };
 };
