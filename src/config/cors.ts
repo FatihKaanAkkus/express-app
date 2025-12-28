@@ -1,6 +1,6 @@
 import type { CorsOptions } from 'cors';
 
 export const corsOptions: CorsOptions = {
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   credentials: true,
 };

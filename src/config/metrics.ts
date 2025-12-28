@@ -19,6 +19,14 @@ export const httpRequestDuration = new Histogram({
   registers: [register],
 });
 
+// Authentication operations counter
+export const authOperationsCounter = new Counter({
+  name: 'auth_operations_total',
+  help: 'Total number of authentication operations',
+  labelNames: ['operation'], // 'register', 'login', 'logout', 'profile'
+  registers: [register],
+});
+
 // User operations counter
 export const userOperationsCounter = new Counter({
   name: 'user_operations_total',

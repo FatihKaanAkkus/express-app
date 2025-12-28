@@ -5,18 +5,23 @@ interface AppError extends Error {
   status?: number;
 }
 
+/**
+ * Returns a middleware for the global error handling.
+ */
 export default () => {
   return (err: AppError, req: Request, res: Response, next: NextFunction): void => {
     const statusCode = err.status || 500;
-    const message = err.message || 'An unexpected error occurred.';
+    const error = err.name || 'Error';
+    const message = err.message || 'Internal Server Error';
 
-    if (env.get<string>('NODE_ENV', 'production') !== 'test') {
-      console.error(`[Error] ${message}`);
+    if (env.get<string>('NODE_ENV', 'production') === 'development') {
+      console.error(`[Error] ${req.traceId} ${message}`, err.stack);
     }
 
     res.status(statusCode).json({
-      error: 'An error occurred',
-      message: env.get<string>('NODE_ENV', 'production') === 'development' ? message : 'Internal Server Error',
+      error: error,
+      message: message,
+      stack: env.get<string>('NODE_ENV', 'production') === 'development' ? err.stack : undefined,
     });
   };
 };

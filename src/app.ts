@@ -2,6 +2,7 @@ import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import { corsOptions } from '@/config/cors';
+import passport from '@/config/passport';
 import monitoring from '@/middlewares/monitoring';
 import errorHandler from '@/middlewares/error-handler';
 import routes from '@/routes';
@@ -14,6 +15,8 @@ app.use(cors(corsOptions));
 app.use(monitoring());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(passport.initialize());
 
 app.get('/', routes.root());
 app.get('/metrics', routes.metrics);

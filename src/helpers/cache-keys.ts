@@ -1,6 +1,6 @@
 export const keys = {
   user: {
-    index: () => 'users:index',
-    show: (id: string) => `user:${id}`,
+    index: (url: string) => `user:${url}`,
+    show: (userId: string) => `user:${userId}`,
   },
 };

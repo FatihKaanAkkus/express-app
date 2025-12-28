@@ -5,4 +5,9 @@ const cache = createCache({
   refreshThreshold: 3000,
 });
 
+export const userIndexCache = createCache({
+  ttl: 60000,
+  refreshThreshold: 3000,
+});
+
 export default cache;

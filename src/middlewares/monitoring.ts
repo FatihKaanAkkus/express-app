@@ -2,6 +2,10 @@ import type { NextFunction, Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { httpRequestCounter, httpRequestDuration } from '@/config/metrics';
 
+/**
+ * Returns a middleware that creates trace ids and monitors incoming HTTP
+ * requests and collects metrics.
+ */
 export default () => {
   return (req: Request, res: Response, next: NextFunction) => {
     req.traceId = uuidv4();

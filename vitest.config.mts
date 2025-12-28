@@ -1,8 +1,6 @@
 import path from "path";
 import { configDefaults, defineConfig } from "vitest/config";
 
-console.log(configDefaults.exclude);
-
 export default defineConfig({
   test: {
     environment: "node",

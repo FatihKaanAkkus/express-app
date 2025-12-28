@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { register } from '@/config/metrics';
 
 const metrics = async (req: Request, res: Response) => {

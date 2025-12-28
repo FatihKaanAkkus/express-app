@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import v1 from './v1';
 import metrics from './metrics';
 
