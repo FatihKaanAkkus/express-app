@@ -31,7 +31,7 @@ export async function register(req: Request, res: Response) {
  * Logs in a user and returns a JWT access token.
  */
 export async function login(req: Request, res: Response, next: Function) {
-  passport.authenticate('local', { session: false }, (err: Error, user: User | false) => {
+  passport.authenticate('local', { session: false, failWithError: true }, (err: Error, user: User | false) => {
     if (err) {
       return next(err);
     }

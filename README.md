@@ -10,38 +10,35 @@ To get started, follow the instructions below to set up the project on your loca
 
 ```
 |-- src/
-│   |-- app.ts                 # Application entry point
-|   |-- server.ts              # Server entry point
-│   |-- config/
-│   │   |-- cache.ts           # Cache configuration using cache-manager
-│   │   |-- env.ts             # Environment configuration
+│   |-- config/                # Configuration files
 │   |-- controllers/           # Controller for resource related operations
-│   │   |-- user-controller.ts
 │   |-- database/              # Database related files
-│   │   |-- prisma-client.ts
 │   │   |-- seeders/
+│   │   |-- prisma-client.ts
 │   |-- generated/
 │   │   |-- prisma/            # Generated Prisma client folder
 │   |-- helpers/               # Helper functions/modules
-│   │   |-- cache-keys.ts
 │   |-- middlewares/           # Middlewares for express application
-│   │   |-- check-cached-resource.ts
-│   │   |-- error-handler.ts
-│   │   |-- validate-user.ts
 │   |-- routes/                # Routes for resource related endpoints
-│   │   |-- user-routes.ts
+│   │   |-- v1/
+│   │-- services/              # Services for resource related operations
 |   |-- tests/                 # Tests folder for vitest
-|   |   |-- setup.ts
 |   |   |-- routes/
+|   |   |-- setup.ts
 │   |-- validators/            # Zod schemas for resource validation
-│       |-- user-schemas.ts
+│   |-- app.ts                 # Application entry point
+|   |-- server.ts              # Server entry point
 |-- prisma/
 │   |-- schema.prisma          # Prisma schema file
 │   |-- migrations/            # Prisma migration files
+|-- .dockerignore
 |-- .editorconfig
 |-- .env
 |-- .env.example               # Should populate .env file from this example
 |-- .gitignore
+|-- compose.yaml               # Docker compose file for the application
+|-- compose.grafana.yaml       # Docker compose file for the Grafana setup
+|-- Dockerfile                 # Dockerfile for containerizing the application
 |-- package.json
 |-- prometheus.yml             # Prometheus configuration file
 |-- tsconfig.json

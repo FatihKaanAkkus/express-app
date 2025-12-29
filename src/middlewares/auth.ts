@@ -7,7 +7,7 @@ export default {
    * Returns a middleware that guards routes for authenticated users only.
    */
   require: () => {
-    return passport.authenticate('jwt', { session: false });
+    return passport.authenticate('jwt', { session: false, failWithError: true });
   },
 
   /**

@@ -5,21 +5,17 @@ import { httpErrors } from '@/helpers/errors';
 type User = Omit<UserModel, 'hashedPassword'>;
 
 async function listUsers(query: { page?: number; perPage?: number }): Promise<User[]> {
-  try {
-    const skip = ((query.page ?? 1) - 1) * (query.perPage ?? 25);
-    const take = query.perPage ?? 25;
+  const skip = ((query.page ?? 1) - 1) * (query.perPage ?? 25);
+  const take = query.perPage ?? 25;
 
-    const users = await prisma.user.findMany({ skip, take });
+  const users = await prisma.user.findMany({ skip, take });
 
-    return users;
-  } catch (error) {
-    throw httpErrors.InternalServerError(`Failed to list users: ${(error as Error).message}`);
-  }
+  return users;
 }
 
 async function createUser(data: { email: string; password: string; name: string; role?: UserRole }): Promise<User> {
   try {
-    const existingUser = await prisma.user.findUnique({ where: { email: data.email } });
+    const existingUser = await getUserByEmail(data.email);
     if (existingUser) {
       throw httpErrors.Conflict('Email already in use');
     }
@@ -44,6 +40,12 @@ async function createUser(data: { email: string; password: string; name: string;
 async function getUserById(id: string): Promise<User | null> {
   return prisma.user.findUnique({
     where: { id },
+  });
+}
+
+async function getUserByEmail(email: string): Promise<User | null> {
+  return prisma.user.findUnique({
+    where: { email },
   });
 }
 

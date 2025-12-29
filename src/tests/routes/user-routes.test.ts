@@ -35,48 +35,50 @@ beforeAll(async () => {
 
 describe('GET /v1/users', () => {
   it('should return a 200 OK status and a JSON array of users', async () => {
-    const response = await request(app).get('/v1/users').set('Authorization', `Bearer ${editorToken}`);
-    expect(response.status).toBe(200);
-    expect(response.type).toBe('application/json');
-    expect(response.body).toBeInstanceOf(Array);
+    const resp = await request(app).get('/v1/users').set('Authorization', `Bearer ${editorToken}`);
+
+    expect(resp.status).toBe(200);
+    expect(resp.type).toBe('application/json');
+    expect(resp.body).toBeInstanceOf(Array);
   });
 
   it('should return 400 Bad Request for invalid query parameters', async () => {
-    const response = await request(app)
+    const resp = await request(app)
       .get('/v1/users')
       .set('Authorization', `Bearer ${editorToken}`)
       .query({ page: 'invalid', perPage: 'invalid' });
-    expect(response.status).toBe(400);
-    expect(response.body).toHaveProperty('message');
+
+    expect(resp.status).toBe(400);
+    expect(resp.body).toHaveProperty('message');
   });
 });
 
 describe('POST /v1/users', () => {
   it('should create a new user and return a 201 Created status', async () => {
     const newUser = { email: 'sherlock@example.com', name: 'Sherlock Holmes', password: 'password123', role: 'guest' };
-    const response = await request(app)
+    const resp = await request(app)
       .post('/v1/users')
       .set('Authorization', `Bearer ${editorToken}`)
       .send(newUser)
       .expect('Content-Type', /json/);
 
-    expect(response.status).toBe(201);
-    expect(response.body).toHaveProperty('id');
-    expect(response.body.name).toBe(newUser.name);
-    expect(response.body.email).toBe(newUser.email);
-    expect(response.body).not.toHaveProperty('hashedPassword');
+    expect(resp.status).toBe(201);
+    expect(resp.body).toHaveProperty('id');
+    expect(resp.body.name).toBe(newUser.name);
+    expect(resp.body.email).toBe(newUser.email);
+    expect(resp.body).not.toHaveProperty('hashedPassword');
   });
 
   it('should return a 400 Bad Request if the request body is invalid', async () => {
     const userWithoutPassword = { name: 'John Watson', email: 'john.watson@example.com', role: 'guest' }; // Missing password
-    const response = await request(app)
+    const resp = await request(app)
       .post('/v1/users')
       .set('Authorization', `Bearer ${editorToken}`)
       .send(userWithoutPassword);
 
-    expect(response.status).toBe(400);
-    expect(response.body).toHaveProperty('message');
-    expect(response.body).not.toHaveProperty('hashedPassword');
+    expect(resp.status).toBe(400);
+    expect(resp.body).toHaveProperty('message');
+    expect(resp.body).not.toHaveProperty('hashedPassword');
 
     const userWithoutEmail = { name: 'Irene Adler', password: 'password123', role: 'guest' }; // Missing email
     const response2 = await request(app)
@@ -90,12 +92,13 @@ describe('POST /v1/users', () => {
 
   it('should return a 400 Bad Request if the email is invalid', async () => {
     const userWithInvalidEmail = { name: 'Invalid', email: 'invalid-email', password: 'password123', role: 'guest' };
-    const response = await request(app)
+    const resp = await request(app)
       .post('/v1/users')
       .set('Authorization', `Bearer ${editorToken}`)
       .send(userWithInvalidEmail);
-    expect(response.status).toBe(400);
-    expect(response.body).toHaveProperty('message');
+
+    expect(resp.status).toBe(400);
+    expect(resp.body).toHaveProperty('message');
   });
 
   it('should return an error when creating a duplicate user', async () => {
@@ -106,12 +109,9 @@ describe('POST /v1/users', () => {
       .send(duplicateUser);
     expect(createResponse.status).toBe(201);
 
-    const response = await request(app)
-      .post('/v1/users')
-      .set('Authorization', `Bearer ${editorToken}`)
-      .send(duplicateUser);
-    expect(response.status).toBeGreaterThanOrEqual(400);
-    expect(response.body).toHaveProperty('message');
+    const resp = await request(app).post('/v1/users').set('Authorization', `Bearer ${editorToken}`).send(duplicateUser);
+    expect(resp.status).toBeGreaterThanOrEqual(400);
+    expect(resp.body).toHaveProperty('message');
   });
 });
 
@@ -124,30 +124,30 @@ describe('GET /v1/users/:userId', () => {
       .send(newUser);
     const userId = createdUserResponse.body.id;
 
-    const response = await request(app).get(`/v1/users/${userId}`).set('Authorization', `Bearer ${editorToken}`);
+    const resp = await request(app).get(`/v1/users/${userId}`).set('Authorization', `Bearer ${editorToken}`);
 
-    expect(response.status).toBe(200);
-    expect(response.type).toBe('application/json');
-    expect(response.body).toHaveProperty('id', userId);
-    expect(response.body).toHaveProperty('name', newUser.name);
-    expect(response.body).toHaveProperty('email', newUser.email);
-    expect(response.body).not.toHaveProperty('hashedPassword');
+    expect(resp.status).toBe(200);
+    expect(resp.type).toBe('application/json');
+    expect(resp.body).toHaveProperty('id', userId);
+    expect(resp.body).toHaveProperty('name', newUser.name);
+    expect(resp.body).toHaveProperty('email', newUser.email);
+    expect(resp.body).not.toHaveProperty('hashedPassword');
   });
 
   it('should return a 404 status and error message if the user does not exist', async () => {
     const nonExistentId = '00000000-0000-0000-0000-000000000000';
-    const response = await request(app).get(`/v1/users/${nonExistentId}`).set('Authorization', `Bearer ${editorToken}`);
+    const resp = await request(app).get(`/v1/users/${nonExistentId}`).set('Authorization', `Bearer ${editorToken}`);
 
-    expect(response.status).toBe(404);
-    expect(response.body).toHaveProperty('message', 'User not found');
+    expect(resp.status).toBe(404);
+    expect(resp.body).toHaveProperty('message', 'User not found');
   });
 
   it('should return a 400 Bad Request if the user ID is invalid', async () => {
     const invalidId = 'invalid-id';
-    const response = await request(app).get(`/v1/users/${invalidId}`).set('Authorization', `Bearer ${editorToken}`);
+    const resp = await request(app).get(`/v1/users/${invalidId}`).set('Authorization', `Bearer ${editorToken}`);
 
-    expect(response.status).toBe(400);
-    expect(response.body).toHaveProperty('message');
+    expect(resp.status).toBe(400);
+    expect(resp.body).toHaveProperty('message');
   });
 });
 
@@ -162,13 +162,13 @@ describe('GET /v1/users/:userId (owner)', () => {
     });
     const ownerToken = loginResp.body.accessToken;
 
-    const response = await request(app).get(`/v1/users/${userId}`).set('Authorization', `Bearer ${ownerToken}`);
+    const resp = await request(app).get(`/v1/users/${userId}`).set('Authorization', `Bearer ${ownerToken}`);
 
-    expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('id', userId);
-    expect(response.body).toHaveProperty('name', user.name);
-    expect(response.body).toHaveProperty('email', user.email);
-    expect(response.body).not.toHaveProperty('hashedPassword');
+    expect(resp.status).toBe(200);
+    expect(resp.body).toHaveProperty('id', userId);
+    expect(resp.body).toHaveProperty('name', user.name);
+    expect(resp.body).toHaveProperty('email', user.email);
+    expect(resp.body).not.toHaveProperty('hashedPassword');
   });
 
   it('should not allow a guest to fetch for another user', async () => {
@@ -176,8 +176,9 @@ describe('GET /v1/users/:userId (owner)', () => {
     const createResp = await request(app).post('/v1/users').set('Authorization', `Bearer ${editorToken}`).send(user);
     const userId = createResp.body.id;
 
-    const response = await request(app).get(`/v1/users/${userId}`).set('Authorization', `Bearer ${guestToken}`);
-    expect(response.status).toBe(403);
+    const resp = await request(app).get(`/v1/users/${userId}`).set('Authorization', `Bearer ${guestToken}`);
+
+    expect(resp.status).toBe(403);
   });
 });
 
@@ -188,35 +189,84 @@ describe('PATCH /v1/users/:userId', () => {
     const userId = createResp.body.id;
 
     const updatedData = { name: 'Updated Name', password: 'newpassword123' };
-    const response = await request(app)
+    const resp = await request(app)
       .patch(`/v1/users/${userId}`)
       .set('Authorization', `Bearer ${editorToken}`)
       .send(updatedData)
       .expect('Content-Type', /json/);
 
-    expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('id', userId);
-    expect(response.body).toHaveProperty('name', updatedData.name);
-    expect(response.body).not.toHaveProperty('hashedPassword');
+    expect(resp.status).toBe(200);
+    expect(resp.body).toHaveProperty('id', userId);
+    expect(resp.body).toHaveProperty('name', updatedData.name);
+    expect(resp.body).not.toHaveProperty('hashedPassword');
+  });
+
+  it('should allow partial updates', async () => {
+    const user = {
+      name: 'Partial Update',
+      email: 'partial.update@example.com',
+      password: 'password123',
+      role: 'guest',
+    };
+    const createResp = await request(app).post('/v1/users').set('Authorization', `Bearer ${editorToken}`).send(user);
+    const userId = createResp.body.id;
+
+    const nameUpdate = { name: 'Partially Updated Name' };
+    let resp = await request(app)
+      .patch(`/v1/users/${userId}`)
+      .set('Authorization', `Bearer ${editorToken}`)
+      .send(nameUpdate)
+      .expect('Content-Type', /json/);
+
+    expect(resp.status).toBe(200);
+    expect(resp.body).toHaveProperty('id', userId);
+    expect(resp.body).toHaveProperty('name', nameUpdate.name);
+    expect(resp.body).not.toHaveProperty('hashedPassword');
+
+    const emailUpdate = { email: 'partially.updated@example.com' };
+    resp = await request(app)
+      .patch(`/v1/users/${userId}`)
+      .set('Authorization', `Bearer ${editorToken}`)
+      .send(emailUpdate)
+      .expect('Content-Type', /json/);
+
+    expect(resp.status).toBe(200);
+    expect(resp.body).toHaveProperty('id', userId);
+    expect(resp.body).toHaveProperty('email', emailUpdate.email);
+    expect(resp.body).not.toHaveProperty('hashedPassword');
+
+    const roleUpdate = { role: 'editor' };
+    resp = await request(app)
+      .patch(`/v1/users/${userId}`)
+      .set('Authorization', `Bearer ${editorToken}`)
+      .send(roleUpdate)
+      .expect('Content-Type', /json/);
+
+    expect(resp.status).toBe(200);
+    expect(resp.body).toHaveProperty('id', userId);
+    expect(resp.body).toHaveProperty('role', roleUpdate.role);
+    expect(resp.body).not.toHaveProperty('hashedPassword');
   });
 
   it('should return 404 if user does not exist', async () => {
     const nonExistentId = '00000000-0000-0000-0000-000000000000';
-    const response = await request(app)
+    const resp = await request(app)
       .patch(`/v1/users/${nonExistentId}`)
       .set('Authorization', `Bearer ${editorToken}`)
       .send({ name: 'No User' });
-    expect(response.status).toBe(404);
-    expect(response.body).toHaveProperty('message');
+
+    expect(resp.status).toBe(404);
+    expect(resp.body).toHaveProperty('message');
   });
 
   it('should return 400 if userId is invalid', async () => {
-    const response = await request(app)
+    const resp = await request(app)
       .patch('/v1/users/invalid-id')
       .set('Authorization', `Bearer ${editorToken}`)
       .send({ name: 'No User' });
-    expect(response.status).toBe(400);
-    expect(response.body).toHaveProperty('message');
+
+    expect(resp.status).toBe(400);
+    expect(resp.body).toHaveProperty('message');
   });
 });
 
@@ -232,16 +282,16 @@ describe('PATCH /v1/users/:userId (owner)', () => {
     const ownerToken = loginResp.body.accessToken;
 
     const updatedData = { name: 'Owner Updated Name', password: 'newownerpassword123' };
-    const response = await request(app)
+    const resp = await request(app)
       .patch(`/v1/users/${userId}`)
       .set('Authorization', `Bearer ${ownerToken}`)
       .send(updatedData)
       .expect('Content-Type', /json/);
 
-    expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('id', userId);
-    expect(response.body).toHaveProperty('name', updatedData.name);
-    expect(response.body).not.toHaveProperty('hashedPassword');
+    expect(resp.status).toBe(200);
+    expect(resp.body).toHaveProperty('id', userId);
+    expect(resp.body).toHaveProperty('name', updatedData.name);
+    expect(resp.body).not.toHaveProperty('hashedPassword');
   });
 
   it('should not allow a guest to update another user', async () => {
@@ -254,12 +304,12 @@ describe('PATCH /v1/users/:userId (owner)', () => {
     const createResp = await request(app).post('/v1/users').set('Authorization', `Bearer ${editorToken}`).send(user);
     const userId = createResp.body.id;
 
-    const response = await request(app)
+    const resp = await request(app)
       .patch(`/v1/users/${userId}`)
       .set('Authorization', `Bearer ${guestToken}`)
       .send({ name: 'Hacker Name' });
 
-    expect(response.status).toBe(403);
+    expect(resp.status).toBe(403);
   });
 });
 
@@ -269,26 +319,26 @@ describe('DELETE /v1/users/:userId', () => {
     const createResp = await request(app).post('/v1/users').set('Authorization', `Bearer ${editorToken}`).send(user);
     const userId = createResp.body.id;
 
-    const response = await request(app)
+    const resp = await request(app)
       .delete(`/v1/users/${userId}`)
       .set('Authorization', `Bearer ${editorToken}`)
       .expect(204);
 
-    expect(response.body).toEqual({});
+    expect(resp.body).toEqual({});
   });
 
   it('should return 404 if user does not exist', async () => {
     const nonExistentId = '00000000-0000-0000-0000-000000000000';
-    const response = await request(app)
-      .delete(`/v1/users/${nonExistentId}`)
-      .set('Authorization', `Bearer ${editorToken}`);
-    expect(response.status).toBe(404);
-    expect(response.body).toHaveProperty('message');
+    const resp = await request(app).delete(`/v1/users/${nonExistentId}`).set('Authorization', `Bearer ${editorToken}`);
+
+    expect(resp.status).toBe(404);
+    expect(resp.body).toHaveProperty('message');
   });
 
   it('should return 400 if userId is invalid', async () => {
-    const response = await request(app).delete('/v1/users/invalid-id').set('Authorization', `Bearer ${editorToken}`);
-    expect(response.status).toBe(400);
-    expect(response.body).toHaveProperty('message');
+    const resp = await request(app).delete('/v1/users/invalid-id').set('Authorization', `Bearer ${editorToken}`);
+
+    expect(resp.status).toBe(400);
+    expect(resp.body).toHaveProperty('message');
   });
 });

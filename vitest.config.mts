@@ -20,6 +20,7 @@ export default defineConfig({
     coverage: {
       exclude: ["src/generated", "src/database"],
     },
+    maxWorkers: 1,
   },
   resolve: {
     alias: {
